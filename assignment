@@ -1,0 +1,151 @@
+SONDE FORTUNE AYOWOLETOMIWA
+RUN/CYB/23/15424
+CVE-2026-65660 is a Microsoft SharePoint code injection vulnerability caused by improper control of code generation (CWE-94). An authenticated attacker with low privileges can exploit it remotely over the network to execute code on a vulnerable SharePoint server. Microsoft rates it CVSS 8.8 (High).
+Impact
+•	Remote code execution (RCE) on SharePoint servers.
+•	Requires an authorized/authenticated attacker.
+•	Can affect confidentiality, integrity, and availability.
+Affected Products
+The following versions are affected if they are older than the patched versions below: [NVD-CVE-2026-65660]
+•	Microsoft SharePoint Enterprise Server 2016 
+o	Vulnerable: versions earlier than 16.0.5565.1001. [NVD-CVE-2026-65660]
+•	Microsoft SharePoint Server 2019 
+o	Vulnerable: versions earlier than 16.0.10417.20198. [NVD-CVE-2026-65660]
+•	Microsoft SharePoint Server Subscription Edition 
+o	Vulnerable: versions earlier than 16.0.19725.20522. [NVD-CVE-2026-65660]
+Patch / Remediation
+Microsoft's security update is the primary fix. Upgrade to at least the following builds: [NVD-CVE-2026-65660]
+Product	Fixed Version
+SharePoint Enterprise Server 2016	16.0.5565.1001 or later
+SharePoint Server 2019	16.0.10417.20198 or later
+SharePoint Server Subscription Edition	16.0.19725.20522 or later
+
+ 
+From a Lockheed Martin Cyber Kill Chain perspective, CVE-2026-65660 represents a particularly dangerous vulnerability because it enables remote code execution (RCE) in Microsoft SharePoint after an attacker obtains a valid account. The vulnerability is classified as CWE-94 (Code Injection) and allows an authorized attacker to execute code over the network. Microsoft scores it CVSS 8.8 (High). 
+Mapping CVE-2026-65660 to the cyber kill chain
+1. Reconnaissance
+The attacker identifies:
+Internet-facing SharePoint deployments
+SharePoint version/build information
+Usernames and authentication mechanisms
+Potential low-privilege accounts
+Because the vulnerability requires an authorized attacker, reconnaissance is focused not only on the server but also on obtaining credentials
+2. Weaponization
+The attacker develops or acquires:
+A SharePoint-specific exploit
+Malicious code payloads
+Web shells
+Command execution scripts
+Persistence mechanisms
+Since the flaw is a code injection vulnerability, the weaponized component is the code that will be injected into the vulnerable SharePoint functionality. The NVD explicitly describes the issue as improper control of code generation leading to code execution. [NVD-CVE-2026-65660]
+3. Delivery
+Unlike phishing-based attacks, delivery here typically occurs through:
+Direct HTTP/HTTPS requests to SharePoint
+Authenticated SharePoint sessions
+Stolen or compromised credentials
+The exploit is delivered through the application's exposed network interfaces.
+Defensive controls
+MFA
+Conditional Access
+VPN restrictions
+Internet exposure reduction
+Web Application Firewall logging
+4. Exploitation
+This is the stage where CVE-2026-65660 directly applies.
+The attacker:
+Authenticates with a low-privilege account.
+Sends crafted requests.
+Triggers code generation weaknesses.
+Achieves execution of attacker-controlled commands.
+The CVSS vector indicates:
+AV:N/AC:L/PR:L/UI:N
+Meaning:
+Network exploitable
+Low attack complexity
+Low privileges required
+No user interaction required
+These properties make exploitation highly attractive to threat actors. 
+5. Installation
+After successful code execution, attackers commonly install:
+Web shells
+Backdoors
+Scheduled tasks
+Additional malware
+Credential theft tools
+In SharePoint environments this frequently means placing a web shell inside web-accessible directories to provide persistent access.
+Example kill-chain progression:
+Authenticated User
+        ↓
+Exploit CVE-2026-65660
+        ↓
+Execute PowerShell
+        ↓
+Drop Web Shell
+        ↓
+Persistent Access
+6. Command and Control (C2)
+Once persistence is established, the compromised SharePoint server becomes a foothold.
+The attacker may:
+Connect to external C2 infrastructure
+Tunnel traffic over HTTPS
+Use PowerShell-based beacons
+Establish reverse shells
+Since SharePoint servers often reside in trusted network segments, successful compromise can provide substantial lateral movement opportunities.
+7. Actions on Objectives
+This is the business impact phase.
+Given the vulnerability's impact ratings of High for:
+Confidentiality
+Integrity
+Availability
+successful exploitation can result in: [NVD-CVE-2026-65660]
+Data Theft
+SharePoint document repositories
+Intellectual property
+HR records
+Financial information
+Privilege Escalation
+Domain credential harvesting
+Service account abuse
+Lateral Movement
+Active Directory compromise
+Movement to SQL servers
+Compromise of Microsoft 365-connected assets
+Disruption
+Ransomware deployment
+Data destruction
+Business process interruption
+
+Why Defenders Should Treat This CVE Seriously
+Several characteristics increase operational risk:
+Factor	Risk
+Remote exploitation	High
+User interaction required	No
+Attack complexity	Low
+Authenticated attacker only	Yes
+Code execution	Yes
+Known Exploited Vulnerability (KEV)	Yes
+
+The inclusion of CVE-2026-65660 in CISA's Known Exploited Vulnerabilities Catalog indicates confirmed exploitation activity and elevates its priority for incident response and patch management programs. 
+Defender-Centric Kill Chain Disruption Points
+For this specific CVE, the most effective interruptions are:
+Reconnaissance Phase
+Reduce SharePoint internet exposure.
+Limit version disclosure.
+Delivery Phase
+Enforce MFA.
+Restrict access by IP/network segmentation.
+Exploitation Phase
+Upgrade to the fixed versions: 
+SharePoint 2016 ≥ 16.0.5565.1001
+SharePoint 2019 ≥ 16.0.10417.20198
+SharePoint Subscription Edition ≥ 16.0.19725.20522 [NVD-CVE-2026-65660]
+Installation/C2 Phase
+Monitor IIS logs.
+Detect unexpected PowerShell activity.
+Hunt for newly created ASPX files and web shells.
+Actions on Objectives Phase
+Use EDR detection.
+Monitor SharePoint service accounts.
+Alert on unusual document repository access patterns.
+From a kill chain viewpoint, CVE-2026-65660 is most critical because it provides a reliable bridge between the Exploitation and Installation phases. Once code execution is achieved on a SharePoint server, the server often becomes a launch pad for broader enterprise compromise, making rapid patching and post-patching threat hunting essential. 
+
